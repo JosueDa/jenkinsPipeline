@@ -1,4 +1,4 @@
-def checkout = { String subFolder, String repo ->
+def checkout = { String subFolder ->
     checkout([
             $class      : "GitSCM",
             branches    : [[name: "*/master"]],
@@ -6,7 +6,7 @@ def checkout = { String subFolder, String repo ->
                              relativeTargetDir: subFolder
                            ]],
             userRemoteConfigs: [[
-                                        url : repo,
+                                        url : 'git@github.com:JosueDa/corecodeproject_testing.git',
                                         credentialsId: "jenkins"
                                 ]]
     ])
@@ -14,28 +14,11 @@ def checkout = { String subFolder, String repo ->
 
 def runner = { commandToExecute -> isUnix() ? sh(commandToExecute) : bat(commandToExecute) }
 
-
-unitTest:{
-    stage("Unit Testing"){
-        node('NewNode'){
-            checkout("tests","git@github.com:ccx54392/corecodeproject_api_.git" )
-            runner 'cd tests && mvn test -DincludeGroup=unitTesting'
-        }
-    }
-}
-IntegrationTest:{
-    stage("Integration Testing"){
-        node('NewNode'){
-            checkout("tests","git@github.com:JosueDa/corecodeproject_testing.git")
-            runner 'cd tests && mvn test -Dgroups=integrationTest'
-        }
-    }
-}
 SystemTest:{
     stage("System or E2E Testing"){
         node('NewNode'){
-            checkout("tests","git@github.com:JosueDa/corecodeproject_testing.git")
-            runner 'cd tests && mvn test -Dgroups=systemTest'
+            checkout("tests")
+            runner 'mvn test -Dgroups=systemTest'
         }
     }
 }
