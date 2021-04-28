@@ -19,7 +19,7 @@ unitTest:{
     stage("Unit Testing"){
         node('NewNode'){
             checkout("tests","git@github.com:ccx54392/corecodeproject_api_.git" )
-            runner 'mvn test -DincludeGroup=unitTesting'
+            runner 'cd tests && mvn test -DincludeGroup=unitTesting'
         }
     }
 }
@@ -27,7 +27,7 @@ IntegrationTest:{
     stage("Integration Testing"){
         node('NewNode'){
             checkout("tests","git@github.com:JosueDa/corecodeproject_testing.git")
-            runner 'mvn test -Dgroups=integrationTest'
+            runner 'cd tests && mvn test -Dgroups=integrationTest'
         }
     }
 }
@@ -35,7 +35,7 @@ SystemTest:{
     stage("System or E2E Testing"){
         node('NewNode'){
             checkout("tests","git@github.com:JosueDa/corecodeproject_testing.git")
-            runner 'mvn test -Dgroups=systemTest'
+            runner 'cd tests && mvn test -Dgroups=systemTest'
         }
     }
 }
